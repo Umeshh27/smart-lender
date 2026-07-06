@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluate Credit Eligibility - Smart Lender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon">SL</div>
+                <div class="logo-text">Smart Lender</div>
+            </a>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/predict" class="nav-link active">Evaluate Credit</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="glass-card">
+            <h1 class="form-title">Credit Risk Evaluator</h1>
+            <p class="form-subtitle">Choose between running an instant single-applicant prediction or uploading a batch CSV dataset for high-volume analysis.</p>
+
+            <!-- Navigation Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-tab="singlePredict">Single Evaluation</div>
+                <div class="tab" data-tab="batchPredict">Batch Evaluation</div>
+            </div>
+
+            {% if error %}
+            <div class="error-alert">
+                <strong>Error:</strong> {{ error }}
+            </div>
+            {% endif %}
+
+            <!-- Tab 1: Single Prediction -->
+            <div id="singlePredict" class="tab-pane active">
+                <form id="loanForm" action="/predict" method="POST">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="Gender">Gender</label>
+                            <select id="Gender" name="Gender" required>
+                                <option value="Male" selected>Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Married">Marital Status</label>
+                            <select id="Married" name="Married" required>
+                                <option value="Yes" selected>Married</option>
+                                <option value="No">Single / Unmarried</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Dependents">Dependents</label>
+                            <select id="Dependents" name="Dependents" required>
+                                <option value="0" selected>None (0)</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3+">3 or more</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Education">Education</label>
+                            <select id="Education" name="Education" required>
+                                <option value="Graduate" selected>Graduate</option>
+                                <option value="Not Graduate">Under Graduate / Non-Graduate</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Self_Employed">Employment Status</label>
+                            <select id="Self_Employed" name="Self_Employed" required>
+                                <option value="No" selected>Salaried employee</option>
+                                <option value="Yes">Self-Employed / Independent</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Credit_History">Credit History</label>
+                            <select id="Credit_History" name="Credit_History" required>
+                                <option value="1.0" selected>Good Credit Score / No Default Record</option>
+                                <option value="0.0">No Credit Score / Past Default Record</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ApplicantIncome">Applicant Income (₹ / month)</label>
+                            <input type="number" id="ApplicantIncome" name="ApplicantIncome" placeholder="e.g. 5400" min="0" required value="5400">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="CoapplicantIncome">Co-Applicant Income (₹ / month)</label>
+                            <input type="number" id="CoapplicantIncome" name="CoapplicantIncome" placeholder="e.g. 0 if none" min="0" required value="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="LoanAmount">Loan Amount (in Thousands ₹)</label>
+                            <input type="number" id="LoanAmount" name="LoanAmount" placeholder="e.g. 150 for ₹150,000" min="1" required value="150">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Loan_Amount_Term">Loan Amount Term (in Months)</label>
+                            <select id="Loan_Amount_Term" name="Loan_Amount_Term" required>
+                                <option value="12">12 Months (1 Year)</option>
+                                <option value="36">36 Months (3 Years)</option>
+                                <option value="60">60 Months (5 Years)</option>
+                                <option value="120">120 Months (10 Years)</option>
+                                <option value="180">180 Months (15 Years)</option>
+                                <option value="240">240 Months (20 Years)</option>
+                                <option value="300">300 Months (25 Years)</option>
+                                <option value="360" selected>360 Months (30 Years)</option>
+                                <option value="480">480 Months (40 Years)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="Property_Area">Property Area</label>
+                            <select id="Property_Area" name="Property_Area" required>
+                                <option value="Urban">Urban Area</option>
+                                <option value="Semiurban" selected>Semi-Urban Area</option>
+                                <option value="Rural">Rural Area</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2.5rem; display: flex; justify-content: flex-end;">
+                        <button type="submit" class="btn btn-primary">Generate Prediction</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 2: Batch Prediction -->
+            <div id="batchPredict" class="tab-pane">
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon">📥</div>
+                    <div class="upload-text">Choose a file or drag it here</div>
+                    <div class="upload-subtext">Upload a CSV file containing applicant parameters. Must contain structural headers: Gender, Married, Dependents, Education, Self_Employed, ApplicantIncome, CoapplicantIncome, LoanAmount, Loan_Amount_Term, Credit_History, Property_Area.</div>
+                    <input type="file" id="fileInput" accept=".csv" style="display: none;">
+                    <button type="button" class="btn btn-secondary">Select CSV File</button>
+                </div>
+
+                <!-- Spinner Container -->
+                <div id="loadingContainer" style="display: none; text-align: center; margin-top: 2rem;">
+                    <div class="spinner"></div>
+                    <p style="color: var(--text-secondary)">Evaluating applicant dataset using XGBoost ML Pipeline...</p>
+                </div>
+
+                <!-- Results Container -->
+                <div id="batchResultsContainer" class="batch-results" style="display: none;">
+                    <h2>Batch Prediction Results</h2>
+                    
+                    <div class="result-details" style="margin-top: 1.5rem;">
+                        <div class="metric-box">
+                            <div class="metric-label">Total Evaluated</div>
+                            <div class="metric-value" id="totalCount">0</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Approved</div>
+                            <div class="metric-value" id="approvedCount" style="color: var(--color-success)">0</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Rejected / High Risk</div>
+                            <div class="metric-value" id="rejectedCount" style="color: var(--color-danger)">0</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Approval Rate</div>
+                            <div class="metric-value" id="approvalRate" style="color: var(--color-accent)">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Applicant Income</th>
+                                    <th>Loan Amount</th>
+                                    <th>Credit History</th>
+                                    <th>Decision</th>
+                                    <th>Confidence</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTableBody">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="margin-top: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: var(--text-secondary); font-size: 0.9rem;">Showing top 10 results. Click download to get the full report.</span>
+                        <a id="downloadResultsBtn" href="#" class="btn btn-primary" style="display: none;">📥 Download Processed CSV</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Smart Lender Platform. Designed for high-confidence credit evaluation and IBM Cloud compliance.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

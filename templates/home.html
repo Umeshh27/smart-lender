@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Lender - AI-Powered Credit Evaluation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon">SL</div>
+                <div class="logo-text">Smart Lender</div>
+            </a>
+            <nav class="nav-links">
+                <a href="/" class="nav-link active">Home</a>
+                <a href="/predict" class="nav-link">Evaluate Credit</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Automate Credit Risk Decisioning with AI</h1>
+                <p class="hero-subtitle">Smart Lender evaluates loan applicant creditworthiness using high-performance classification algorithms, empowering financial institutions to make faster, compliant, and data-driven approval decisions.</p>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="/predict" class="btn btn-primary">Start Evaluation</a>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <!-- Clean Document + Check icon (representing loan eligibility decision) -->
+                <svg width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" stroke="var(--border-color)" fill="var(--bg-secondary)"/>
+                    <polyline points="14 2 14 8 20 8" stroke="var(--border-color)"/>
+                    <polyline points="9 15 11 17 15 13" stroke="var(--color-success)" stroke-width="2"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Feature Grid -->
+        <section class="grid-features">
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3 class="feature-title">High-Confidence Approvals</h3>
+                <p class="feature-desc">Utilize state-of-the-art machine learning models trained on structural applicant metrics for low-risk fast-tracking.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3 class="feature-title">Advanced Risk Detection</h3>
+                <p class="feature-desc">Instantly flags self-employment instability, missing credit histories, and elevated debt ratios before manual review.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Batch Processing Flow</h3>
+                <p class="feature-desc">Empower analysts to upload lists of applicants during high-volume periods to instantly process bulk predictions.</p>
+            </div>
+        </section>
+
+        <!-- Model Comparison & Stats -->
+        <section class="model-comparison glass-card">
+            <h2>Machine Learning Pipeline Metrics</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                Our pipeline processes missing categorical fields via mode imputation, numerical metrics via median imputation, scales features with standard scaler, balances classes using SMOTE, and evaluates multiple classifiers.
+            </p>
+            
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <div class="comparison-name">Decision Tree</div>
+                    <div class="comparison-acc">78.5%</div>
+                    <div class="comparison-acc-label">Testing Accuracy</div>
+                </div>
+                <div class="comparison-card">
+                    <div class="comparison-name">K-Nearest Neighbors</div>
+                    <div class="comparison-acc">76.8%</div>
+                    <div class="comparison-acc-label">Testing Accuracy</div>
+                </div>
+                <div class="comparison-card">
+                    <div class="comparison-name">Random Forest</div>
+                    <div class="comparison-acc">80.3%</div>
+                    <div class="comparison-acc-label">Testing Accuracy</div>
+                </div>
+                <div class="comparison-card best">
+                    <div class="comparison-name">XGBoost Classifier</div>
+                    <div class="comparison-acc">81.1%</div>
+                    <div class="comparison-acc-label">Testing Accuracy</div>
+                    <div style="font-size: 0.8rem; color: var(--color-teal); font-weight: 600; margin-top: 5px;">94.7% Training Accuracy</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Smart Lender Platform. Designed for high-confidence credit evaluation and IBM Cloud compliance.</p>
+    </footer>
+</body>
+</html>
